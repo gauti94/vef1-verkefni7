@@ -9,10 +9,10 @@
 // Fastar
 
 /** Íslenskir sérhljóðar */
-const CONSONANTS = 'bcdfghjklmnpqrstvwxz'.split('');
+const CONSONANTS = "bcdfghjklmnpqrstvwxz".split("");
 
 /** Íslenskir samhljóðar */
-const VOWELS = 'aeiouyáéýúíóöæ'.split('');
+const VOWELS = "aeiouyáéýúíóöæ".split("");
 
 //------------------------------------------------------------------------------
 // Hjálparföll
@@ -23,12 +23,12 @@ const VOWELS = 'aeiouyáéýúíóöæ'.split('');
  * @returns `true` ef `str` er strengur, annars `false`.
  */
 // Skilgreinum anonymous fall og bindum við breytuna `isString`
-const isString = (str) => typeof str === 'string';
+const isString = (str) => typeof str === "string";
 
 // Prófum fallið
-console.assert(isString('hi') === true, 'isString: skilar `true` fyrir streng');
-console.assert(isString(42) === false, 'isString: skilar `false` fyrir tölu');
-console.assert(isString(null) === false, 'isString: skilar `false` fyrir null');
+console.assert(isString("hi") === true, "isString: skilar `true` fyrir streng");
+console.assert(isString(42) === false, "isString: skilar `false` fyrir tölu");
+console.assert(isString(null) === false, "isString: skilar `false` fyrir null");
 
 /**
  * Öruggt fall sem skilar fylki af strengjum úr gefnum streng, skipt upp með
@@ -37,7 +37,7 @@ console.assert(isString(null) === false, 'isString: skilar `false` fyrir null');
  * @returns {string[]} Fylki af strengjum eða tóma fylkið ef afmarkari kom
  * ekki fram.
  */
-function split(str, separator = ' ') {
+function split(str, separator = " ") {
   if (!isString(str)) {
     return [];
   }
@@ -49,28 +49,139 @@ function split(str, separator = ' ') {
 // Grunnföll sem skilgreina á
 
 function longest(str) {
-  // Útfæra
+  if (isString(str)) {
+    const split = str.split(" ");
+    let longest = "";
+    for (const word of split) {
+      if (word.length > longest.length) {
+        longest = word;
+      }
+    }
+    return longest;
+  }
+  return null;
 }
+console.assert(
+  longest("Halló þetta er laaaaaangt") === "laaaaaangt",
+  "longest: skilar lengsta orðinu í strengnum"
+);
+console.assert(
+  longest("") === "",
+  "longest: ef strengur er tómur þá skila tómum streng"
+);
+console.assert(longest(false) === null, "longest: ef ekki strengur skila null");
 
 function shortest(str) {
-  // Útfæra
+  if (isString(str)) {
+    const split = str.split(" ");
+    let shortest = split[0];
+    for (const word of split) {
+      if (word.length < shortest.length) {
+        shortest = word;
+      }
+    }
+    return shortest;
+  }
+  return null;
 }
+console.assert(
+  shortest("Halló þetta er laaaaaangt") === "er",
+  "shortest: skilar stysta orðinu í strengnum"
+);
+console.assert(
+  shortest("") === "",
+  "reverse: ef strengur er tómur þá skila tómum streng"
+);
+console.assert(
+  shortest(false) === null,
+  "longest: ef ekki strengur skila null"
+);
 
 function reverse(str) {
-  // Útfæra
+  if (isString(str)) {
+    const split = str.split("");
+    const reversed = split.reverse();
+
+    return reversed.join("");
+  }
+  return null;
 }
+console.assert(reverse("hæ") === "æh", "reverse: snýr við einföldum streng");
+console.assert(reverse(false) === null, "reverse: ef ekki strengur skila null");
 
 function palindrome(str) {
-  // Útfæra
+  if (str === '') {
+    return false;
+  }
+  if (isString(str)) {
+    const normalized = str.toLowerCase();
+    const split = normalized.split('');
+    const reversed = split.reverse().join('');
+    return normalized === reversed;
+  }
+  return false;
 }
+console.assert(
+  palindrome("civic") === true,
+  "palindrome: er setningin palindrome?"
+);
+console.assert(
+  palindrome("") === false,
+  "palindrome: tómur strengur er ekki samhverfur"
+);
+console.assert(palindrome(5) === false, 'palindrome: 5 er ekki strengur');
 
 function vowels(str) {
-  // Útfæra
+  let vowelCount = 0;
+  if (isString(str)) {
+    for (const char of str) {
+      if (VOWELS.includes(char)) {
+        vowelCount++;
+      }
+    }
+    return vowelCount;
+  }
+  return 0;
 }
+console.assert(
+  vowels("halló") === 2,
+  "vowels: skilar fjölda sérhljóða í setningu"
+);
+console.assert(
+  vowels("lengri setning") === 4,
+  "vowels: skilar fjölda sérhljóða í setningu"
+);
+console.assert(vowels("") === 0, "vowels: ef tómur strengur þá skila 0");
+console.assert(vowels("hhh") === 0, "vowels: ef engir sérhljóðar þá skila 0");
 
 function consonants(str) {
-  // Útfæra
+  let consonantCount = 0;
+  if (isString(str)) {
+    for (const char of str) {
+      if (CONSONANTS.includes(char)) {
+        consonantCount++;
+      }
+    }
+    return consonantCount;
+  }
+  return 0;
 }
+console.assert(
+  consonants("halló") === 3,
+  "consonants: skilar fjölda samhljóða í setningu"
+);
+console.assert(
+  consonants("lengri setning") === 9,
+  "consonants: skilar fjölda samhljóða í setningu"
+);
+console.assert(
+  consonants("") === 0,
+  "consonants: ef tómur strengur þá skila 0"
+);
+console.assert(
+  consonants("aaa") === 0,
+  "consonants: ef engir samhljóðar þá skila 0"
+);
 
 //------------------------------------------------------------------------------
 // Leiðbeint ferli
